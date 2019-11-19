@@ -6,7 +6,6 @@ const {
 const client = new Discord.Client();
 const ytdl = require('ytdl-core');
 
-const PREFIX = '==';
 
 var servers = {};
 
@@ -18,13 +17,73 @@ client.on('ready', () => {
 
 
 client.on('message', message => {
-    let args = message.content.substring(PREFIX.length).split(" ");
+    let lists = false;
+    let args = message.content.split(" ");
+
 
     switch (args[0]) {
-        case 'play':
+
+        case '==pause':
+            var server = servers[message.guild.id];
+
+            if (!server) return message.channel.send('플레이중인 노래가 없습니다.');
+
+            if (message.member.voiceChannel !== message.guild.me.voiceChannel) return message.channel.send('저와 같은채널에 계시지 않습니다.');
+
+            if (server.dispatcher.paused) return message.channel.send('이미 노래가 중지되어있습니다.');
+
+            server.dispatcher.pause();
+
+            message.channel.send(`노래를 중지했습니다.`);
+            break;
+
+        case '==list':
+            var server = servers[message.guild.id];
+            for (var i = 0; i<=server.queue.length - 1; i++ )
+            {
+                message.channel.send('```' + server.queue[i] + '```')
+            }
+            break;
+
+        case '==resume':
+            var server = servers[message.guild.id];
+
+            if (!server) return message.channel.send('플레이중인 노래가 없습니다.');
+
+            if (message.member.voiceChannel !== message.guild.me.voiceChannel) return message.channel.send('저와 같은채널에 계시지 않습니다.');
+
+            if (!server.dispatcher.paused) return message.channel.send('이 노래는 중지되어있지 않습니다.');
+
+            server.dispatcher.resume();
+
+            message.channel.send(`노래를 재개합니다.`);
+            break;
+
+        case '==play':
+
+
+
+            if (args[1].indexOf('youtu') != -1){
+                message.channel.send('노래를 재생합니다.')
+
+            }
+            else {
+                message.channel.send('제대로된 링크를 적으세요.');
+                return ;
+            }
+
+
+
 
             function play(connection, message) {
+                lists = true;
                 var server = servers[message.guild.id];
+
+
+
+
+
+
 
                 server.dispatcher = connection.playStream(ytdl(server.queue[0], {filter: 'audioonly'}));
 
@@ -42,14 +101,16 @@ client.on('message', message => {
             }
 
             if (!args[1]){
-                message.channel.send('제대로된 링크를 적으세요');
+                message.channel.send('제대로된 링크를 적으세요.');
                 return;
             }
 
+
             if (!message.member.voiceChannel) {
-                message.channel.send('채널안에 들어가 있으세요');
+                message.channel.send('채널안에 들어가 있으세요.');
                 return;
             }
+
 
             if (!servers[message.guild.id]) servers[message.guild.id] = {
                 queue: []
@@ -66,23 +127,21 @@ client.on('message', message => {
 
             break;
 
-        case 'skip':
+        case '==skip':
             var server = servers[message.guild.id];
                 if (server.dispatcher) server.dispatcher.end();
             break;
 
 
-        case 'stop':
+        case '==stop':
             var server = servers[message.guild.id];
             if (message.guild.voiceConnection){
-                message.channel.send('노래 스킵했음')
                 for (var i = server.queue.length - 1; i >= 0; i--){
                     server.queue.splice(i, 1);
                 }
 
                 server.dispatcher.end();
-                message.channel.send('다 끝나서 나감')
-                console.log('노래 끔')
+                message.channel.send('다 끝나서 나갑니다.')
             }
 
             if (message.guild.connection) message.guild.voiceConnection.disconnect();
@@ -98,7 +157,7 @@ client.on('message', message => {
             if (message.content.indexOf('==담배빵') != -1) {
 
 
-                await message.channel.send(a[0] + '넌 안되겠다');
+                await message.channel.send(a[0] + '넌 안되겠다.');
                 await message.channel.send({ files: ['monsrat_img/nun.png'] })
                 message.channel.send("치------------------익", { files: ['monsrat_img/zzz.jpg'] })
         }
@@ -117,9 +176,9 @@ client.on('message', message => {
                             else  {
                                 message.reply('명령어를 DM으로 보내드렸습니다. ^^');
                                 message.channel.send({ files: ['monsrat_img/111.jpg'] });
-                                message.author.send('```==담배빵, ==기모링, ==개잘해, ==충성, ==버스, ==다1빙, ==뻐큐, ==실압근``` ex) @괴물쥐 ==담배빵')
+                                message.author.send('```==담배빵, ==기모링, ==개잘해, ==충성, ==버스, ==다1빙, ==뻐큐, ==실압근, ==텟카이``` ex) @괴물쥐 ==담배빵')
                                 message.author.send('이 있고, 음악을 틀으실 때에는,')
-                                message.author.send('```==play 유튜브링크, ==skip, ==stop```이 있습니다.')
+                                message.author.send('```==play 유튜브링크, ==skip, ==stop, ==skip, ==pause, ==list, ==resume```가 있습니다.')
                             }
                         })
 
@@ -146,12 +205,22 @@ client.on('message', message => {
         message.channel.send({ files: ['monsrat_img/xxx.jpg'] })
     }
 
+
+
     async function playca() {
+
         if (message.content.indexOf('==캐리') != -1) {
+            if (message.member.voiceChannel === message.guild.me.voiceChannel) {
+                message.reply('노래가 끝나면 불러주세요.')
+                return false;
+            }
             var voiceChannel = message.member.voiceChannel;
             voiceChannel.join()
                 .then(connection =>{
                     connection.playFile('monsrat_mp3/carry.mp3')
+                    setTimeout(function () {
+                        voiceChannel.leave();
+                    }, 4000);
                 })
                 .catch(err => console.log(err));
 
@@ -159,7 +228,8 @@ client.on('message', message => {
             message.channel.send({ files: ['monsrat_img/carry.jpg'] })
         }
 
-        // voiceChannel.leave();setTimeout(1000)
+
+
     }
 
     playca();
@@ -180,6 +250,9 @@ client.on('message', message => {
     if (message.content.indexOf('==실압근') != -1) {
         message.channel.send( a[0] + '이 실압근에 뒤지기 싫으면 가만히 있어' ,{ files: ['monsrat_img/sil.png'] })
     }
+    if (message.content.indexOf('==텟카이') != -1) {
+        message.channel.send( a[0] + '텟카이!' ,{ files: ['monsrat_img/tet.png'] })
+    }
 });
 
-
+client.login('NjQ1NjAwNTMzNDczNjU2ODMy.XdHjJA.nr-Hb_iB-1YMfdTIX-EwL-nFaUc');
