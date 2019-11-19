@@ -255,4 +255,3 @@ client.on('message', message => {
     }
 });
 
-client.login('NjQ1NjAwNTMzNDczNjU2ODMy.XdHjJA.nr-Hb_iB-1YMfdTIX-EwL-nFaUc');
