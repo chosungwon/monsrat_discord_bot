@@ -21,6 +21,21 @@ client.on('message', message => {
     let args = message.content.split(" ");
 
 
+    async function fri() {
+        var server = servers[message.guild.id];
+        if (message.guild.voiceConnection){
+            for (var i = server.queue.length - 1; i >= 0; i--){
+                server.queue.splice(i, 1);
+            }
+            await message.channel.send('다음에 보자고 친구ㅋ', { files: ['monsrat_img/end.jpeg'] });
+            server.dispatcher.end();
+
+
+        }
+
+        if (message.guild.connection) message.guild.voiceConnection.disconnect();
+    }
+
     switch (args[0]) {
 
         case '==pause':
@@ -62,20 +77,22 @@ client.on('message', message => {
         case '==play':
 
 
-
-            if (args[1].indexOf('youtu') != -1){
+            if (args[1].indexOf('youtu') != -1 && message.member.voiceChannel){
                 message.channel.send('노래를 재생합니다.')
 
             }
-            else {
+
+            if(args[1].indexOf('youtu') <= -1) {
                 message.channel.send('제대로된 링크를 적으세요.');
                 return ;
             }
 
 
-
-
             function play(connection, message) {
+
+
+
+
                 lists = true;
                 var server = servers[message.guild.id];
 
@@ -134,17 +151,7 @@ client.on('message', message => {
 
 
         case '==stop':
-            var server = servers[message.guild.id];
-            if (message.guild.voiceConnection){
-                for (var i = server.queue.length - 1; i >= 0; i--){
-                    server.queue.splice(i, 1);
-                }
-
-                server.dispatcher.end();
-                message.channel.send('다 끝나서 나갑니다.')
-            }
-
-            if (message.guild.connection) message.guild.voiceConnection.disconnect();
+            fri()
             break;
     }
 
@@ -205,6 +212,15 @@ client.on('message', message => {
         message.channel.send({ files: ['monsrat_img/xxx.jpg'] })
     }
 
+    if (message.content.indexOf('==어이') != -1) {
+        message.channel.send(a[0] + '어이!!!!!!!!!!!!');
+        message.channel.send({ files: ['monsrat_img/eui.jpg'] })
+    }
+
+    if (message.content.indexOf('==다운') != -1) {
+        message.channel.send(a[0] + '버러지 다운ㅋ');
+        message.channel.send({ files: ['monsrat_img/down.png'] })
+    }
 
 
     async function playca() {
@@ -255,4 +271,3 @@ client.on('message', message => {
     }
 });
 
-client.login('NjQ1NjAwNTMzNDczNjU2ODMy.XdHjJA.nr-Hb_iB-1YMfdTIX-EwL-nFaUc');
