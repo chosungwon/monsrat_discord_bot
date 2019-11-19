@@ -4,7 +4,6 @@
     <list default="true" id="196bbd45-28bc-47e7-be7d-b125af294da9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monsrat_img/KakaoTalk_20191117_212651888.jpg" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -59,7 +58,7 @@
       <option name="presentableId" value="Default" />
       <updated>1573994098167</updated>
       <workItem from="1573994099251" duration="1743000" />
-      <workItem from="1574036022523" duration="33994000" />
+      <workItem from="1574036022523" duration="35004000" />
     </task>
     <servers />
   </component>

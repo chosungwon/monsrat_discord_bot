@@ -110,6 +110,7 @@ client.on('message', message => {
                     if (server.queue[0]){
                         play(connection, message);
                     }else {
+                        message.channel.send('다음에 보자고 친구ㅋ', { files: ['monsrat_img/end.jpeg'] });
                         connection.disconnect();
                     }
                 });
