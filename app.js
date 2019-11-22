@@ -130,7 +130,7 @@ client.on('message', message => {
         //             for (let i = 0; i < 5; i++) {
         //                 message.channel.send(data.items[i].snippet.title)
         //             }
-        
+        //
         //             function play(connection, message) {
         //                 lists = true;
         //                 var server = servers[message.guild.id];
@@ -144,7 +144,11 @@ client.on('message', message => {
         //                     }
         //                 });
         //             }
-        
+        //
+        //             if (!args[1]){
+        //                 message.channel.send('제대로된 링크를 적으세요.');
+        //                 return;
+        //             }
         //             if (!message.member.voiceChannel) {
         //                 message.channel.send('채널안에 들어가 있으세요.');
         //                 return;
@@ -153,17 +157,17 @@ client.on('message', message => {
         //                 queue: []
         //             }
         //             var server = servers[message.guild.id];
-        
+        //
         //             server.queue.push('https://www.youtube.com/watch?v=' + data.items.id.videoId); //큐에 링크를 넣ㄴ
-        
+        //
         //             if (!message.guild.voiceConnection) message.member.voiceChannel.join()
         //                 .then(function (connection) {play(connection, message);})
         //                 .catch(error =>{console.log(error)})
-        
+        //
         //         });
         //     }
         // case `==${1}`:
-        
+        //
         //     break;
 
 
@@ -442,3 +446,6 @@ client.on('message', message => {
         message.channel.send(a[0] + '텟카이!', { files: ['monsrat_img/tet.png'] })
     }
 });
+
+client.login('NjQ1NjAwNTMzNDczNjU2ODMy.XdOnaw.TCjCCPQgBKt55tGcU6W9gzqCpbs');
+
