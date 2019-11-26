@@ -573,7 +573,7 @@ client.on('message', message => {
                     }, 13000);
                 })
                 .catch(err => console.log(err));
-            await message.channel.send(a[0] + '두두두두두두두두두두두두두두두두', { files: ['monsrat_img/rat.gif'] } )
+            await message.channel.send(a[0] + '두두두두두두두두두두두두두두두두', { files: ['monsrat_img/rat.gif'] })
             message.channel.send('아디오스.')
 
         }
