@@ -10,6 +10,8 @@ const ytdl = require('ytdl-core');
 
 var servers = {};
 
+var musiclist = [];
+
 
 client.on('ready', () => {
     console.log('Monsrat On');
@@ -21,16 +23,18 @@ client.on('ready', () => {
 client.on('message', message => {
     let lists = false;
     let args = message.content.split(" ");
+    let musicTitle = message.content.split("==p ");
 
 
     async function fri() {
+        // if (!server) return message.channel.send('플레이중인 노래가 없습니다.');
         var server = servers[message.guild.id];
         if (message.guild.voiceConnection) {
             for (var i = server.queue.length - 1; i >= 0; i--) {
                 server.queue.splice(i, 1);
             }
-            await message.channel.send('다음에 보자고 친구ㅋ', { files: ['monsrat_img/end.jpeg'] });
-            server.dispatcher.end();
+            message.channel.send('다음에 보자고 친구ㅋ', { files: ['monsrat_img/end.jpeg'] });
+            await server.dispatcher.end();
 
 
         }
@@ -86,6 +90,18 @@ client.on('message', message => {
             break;
 
         case '==play':
+            if (!args[1]) {
+                message.channel.send('제대로된 링크를 적으세요.');
+                return;
+            }
+
+            if (message.member.voiceChannel !== message.guild.me.voiceChannel) return message.channel.send('저와 같은채널에 계시지 않습니다.');
+
+            if (!message.member.voiceChannel) {
+                message.channel.send('채널안에 들어가 있으세요.');
+                return;
+            }
+
             if (args[1].indexOf('youtu') != -1 && message.member.voiceChannel) {
                 message.channel.send('노래를 재생합니다.')
                 function play(connection, message) {
@@ -102,14 +118,6 @@ client.on('message', message => {
                     });
                 }
 
-                if (!args[1]) {
-                    message.channel.send('제대로된 링크를 적으세요.');
-                    return;
-                }
-                if (!message.member.voiceChannel) {
-                    message.channel.send('채널안에 들어가 있으세요.');
-                    return;
-                }
                 if (!servers[message.guild.id]) servers[message.guild.id] = {
                     queue: []
                 }
@@ -120,58 +128,68 @@ client.on('message', message => {
                 if (!message.guild.voiceConnection) message.member.voiceChannel.join()
                     .then(function (connection) { play(connection, message); })
                     .catch(error => { console.log(error) })
-            }
+                 }
             break;
 
-        //     if(args[1].indexOf('youtu') <= -1 && message.member.voiceChannel) {
-        //         args[1]=encodeURI(args[1]);
-        //         Request(`https://www.googleapis.com/youtube/v3/search?q=${args[1]}&part=snippet&key=AIzaSyCMH72Mw1oBXQKgFtaaqtQw9y5AB9jDcVg&maxResults=5`, function(err, res, body){
-        //             var data=JSON.parse(body)
-        //             for (let i = 0; i < 5; i++) {
-        //                 message.channel.send(data.items[i].snippet.title)
-        //             }
-        //
-        //             function play(connection, message) {
-        //                 lists = true;
-        //                 var server = servers[message.guild.id];
-        //                 server.dispatcher = connection.playStream(ytdl(server.queue[0], {filter: 'audioonly'}));
-        //                 server.queue.shift();
-        //                 server.dispatcher.on('end', function () {
-        //                     if (server.queue[0]){
-        //                         play(connection, message);
-        //                     }else {
-        //                         connection.disconnect();
-        //                     }
-        //                 });
-        //             }
-        //
-        //             if (!args[1]){
-        //                 message.channel.send('제대로된 링크를 적으세요.');
-        //                 return;
-        //             }
-        //             if (!message.member.voiceChannel) {
-        //                 message.channel.send('채널안에 들어가 있으세요.');
-        //                 return;
-        //             }
-        //             if (!servers[message.guild.id]) servers[message.guild.id] = {
-        //                 queue: []
-        //             }
-        //             var server = servers[message.guild.id];
-        //
-        //             server.queue.push('https://www.youtube.com/watch?v=' + data.items.id.videoId); //큐에 링크를 넣ㄴ
-        //
-        //             if (!message.guild.voiceConnection) message.member.voiceChannel.join()
-        //                 .then(function (connection) {play(connection, message);})
-        //                 .catch(error =>{console.log(error)})
-        //
-        //         });
-        //     }
-        // case `==${1}`:
-        //
-        //     break;
+        case '==search':
+            if (!args[1]) {
+                message.channel.send('제대로된 링크를 적으세요.');
+                return;
+            }
+            if (!message.member.voiceChannel) {
+                message.channel.send('채널안에 들어가 있으세요.');
+                return;
+            }
+            if(args[1].indexOf('youtu') <= -1 && message.member.voiceChannel) {
+                args[1] = encodeURI(args[1]);
+                Request(`https://www.googleapis.com/youtube/v3/search?q=${args[1]}&part=snippet&key=AIzaSyCMH72Mw1oBXQKgFtaaqtQw9y5AB9jDcVg&maxResults=5`, function (err, res, body) {
+                var data = JSON.parse(body)
+                for (let i = 0; i < 5; i++) {
+                    message.channel.send(`**${i + 1}. **` + data.items[i].snippet.title)
+                }
 
+                musiclist = data.items
+                });
+            }
+            break;
+        case `==p`:
+            if (musicTitle[1] !== '1' && musicTitle[1] !== '2' && musicTitle[1] !== '3' && musicTitle[1] !== '4' && musicTitle[1] !== '5'){
+                return
+            }
+            if (musiclist = []){
+                console.log('비었다')
+                return
+            }
+            let listNum = musicTitle[1] - 1;
+        function play(connection, message) {
 
+            lists = true;
+            var server = servers[message.guild.id];
+            server.dispatcher = connection.playStream(ytdl(server.queue[0], {filter: 'audioonly'}));
+            server.queue.shift();
+            server.dispatcher.on('end', function () {
+                if (server.queue[0]) {
+                    play(connection, message);
+                } else {
+                    connection.disconnect();
+                }
+            });
+        }
+            if (!servers[message.guild.id]) servers[message.guild.id] = {
+                queue: []
+            }
+            var server = servers[message.guild.id];
+            server.queue.push('https://www.youtube.com/watch?v=' + musiclist[listNum].id.videoId); //큐에 링크를 넣음
 
+            if (!message.guild.voiceConnection) message.member.voiceChannel.join()
+                .then(function (connection) {
+                    play(connection, message);
+                    musiclist = [];
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+            break;
     }
 
     if (message.author.bot) return;
@@ -605,7 +623,7 @@ client.on('message', message => {
                 })
                 .catch(err => console.log(err));
 
-
+            await message.channel.send(a[0] + '말대꾸 하지마!!!!!!!!!!!!', { files: ['monsrat_img/mal.png'] })
         }
     }
 
@@ -682,6 +700,5 @@ client.on('message', message => {
         message.channel.send(a[0] + '텟카이!', { files: ['monsrat_img/tet.png'] })
     }
 });
-
 
 
