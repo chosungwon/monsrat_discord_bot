@@ -131,65 +131,65 @@ client.on('message', message => {
                  }
             break;
 
-        case '==search':
-            if (!args[1]) {
-                message.channel.send('제대로된 링크를 적으세요.');
-                return;
-            }
-            if (!message.member.voiceChannel) {
-                message.channel.send('채널안에 들어가 있으세요.');
-                return;
-            }
-            if(args[1].indexOf('youtu') <= -1 && message.member.voiceChannel) {
-                args[1] = encodeURI(args[1]);
-                Request(`https://www.googleapis.com/youtube/v3/search?q=${args[1]}&part=snippet&key=AIzaSyCMH72Mw1oBXQKgFtaaqtQw9y5AB9jDcVg&maxResults=5`, function (err, res, body) {
-                var data = JSON.parse(body)
-                for (let i = 0; i < 5; i++) {
-                    message.channel.send(`**${i + 1}. **` + data.items[i].snippet.title)
-                }
-
-                musiclist = data.items
-                });
-            }
-            break;
-        case `==p`:
-            if (musicTitle[1] !== '1' && musicTitle[1] !== '2' && musicTitle[1] !== '3' && musicTitle[1] !== '4' && musicTitle[1] !== '5'){
-                return
-            }
-            if (musiclist = []){
-                console.log('비었다')
-                return
-            }
-            let listNum = musicTitle[1] - 1;
-        function play(connection, message) {
-
-            lists = true;
-            var server = servers[message.guild.id];
-            server.dispatcher = connection.playStream(ytdl(server.queue[0], {filter: 'audioonly'}));
-            server.queue.shift();
-            server.dispatcher.on('end', function () {
-                if (server.queue[0]) {
-                    play(connection, message);
-                } else {
-                    connection.disconnect();
-                }
-            });
-        }
-            if (!servers[message.guild.id]) servers[message.guild.id] = {
-                queue: []
-            }
-            var server = servers[message.guild.id];
-            server.queue.push('https://www.youtube.com/watch?v=' + musiclist[listNum].id.videoId); //큐에 링크를 넣음
-
-            if (!message.guild.voiceConnection) message.member.voiceChannel.join()
-                .then(function (connection) {
-                    play(connection, message);
-                    musiclist = [];
-                })
-                .catch(error => {
-                    console.log(error)
-                })
-            break;
+        // case '==search':
+        //     if (!args[1]) {
+        //         message.channel.send('제대로된 링크를 적으세요.');
+        //         return;
+        //     }
+        //     if (!message.member.voiceChannel) {
+        //         message.channel.send('채널안에 들어가 있으세요.');
+        //         return;
+        //     }
+        //     if(args[1].indexOf('youtu') <= -1 && message.member.voiceChannel) {
+        //         args[1] = encodeURI(args[1]);
+        //         Request(`https://www.googleapis.com/youtube/v3/search?q=${args[1]}&part=snippet&key=AIzaSyCMH72Mw1oBXQKgFtaaqtQw9y5AB9jDcVg&maxResults=5`, function (err, res, body) {
+        //         var data = JSON.parse(body)
+        //         for (let i = 0; i < 5; i++) {
+        //             message.channel.send(`**${i + 1}. **` + data.items[i].snippet.title)
+        //         }
+        //
+        //         musiclist = data.items
+        //         });
+        //     }
+        //     break;
+        // case `==p`:
+        //     if (musicTitle[1] !== '1' && musicTitle[1] !== '2' && musicTitle[1] !== '3' && musicTitle[1] !== '4' && musicTitle[1] !== '5'){
+        //         return
+        //     }
+        //     if (musiclist = []){
+        //         console.log('비었다')
+        //         return
+        //     }
+        //     let listNum = musicTitle[1] - 1;
+        // function play(connection, message) {
+        //
+        //     lists = true;
+        //     var server = servers[message.guild.id];
+        //     server.dispatcher = connection.playStream(ytdl(server.queue[0], {filter: 'audioonly'}));
+        //     server.queue.shift();
+        //     server.dispatcher.on('end', function () {
+        //         if (server.queue[0]) {
+        //             play(connection, message);
+        //         } else {
+        //             connection.disconnect();
+        //         }
+        //     });
+        // }
+        //     if (!servers[message.guild.id]) servers[message.guild.id] = {
+        //         queue: []
+        //     }
+        //     var server = servers[message.guild.id];
+        //     server.queue.push('https://www.youtube.com/watch?v=' + musiclist[listNum].id.videoId); //큐에 링크를 넣음
+        //
+        //     if (!message.guild.voiceConnection) message.member.voiceChannel.join()
+        //         .then(function (connection) {
+        //             play(connection, message);
+        //             musiclist = [];
+        //         })
+        //         .catch(error => {
+        //             console.log(error)
+        //         })
+        //     break;
     }
 
     if (message.author.bot) return;
@@ -275,6 +275,30 @@ client.on('message', message => {
             .catch(err => console.log(err));
         message.channel.send(a[0] + '흐에에에에에에에에에에에!!');
         message.channel.send({ files: ['monsrat_img/heek.png'] })
+    }
+
+    if (message.content.indexOf('==네이스') != -1) {
+        if (!message.member.voiceChannel) {
+            message.channel.send(a[0] + '네이스 네이스!!!!!!!!!!');
+            message.channel.send({ files: ['monsrat_img/neis.png'] })
+            return;
+        }
+
+        if (message.member.voiceChannel === message.guild.me.voiceChannel) {
+            message.reply('괴물쥐가 나갔을때 불러주세요.')
+            return false;
+        }
+        var voiceChannel = message.member.voiceChannel;
+        voiceChannel.join()
+            .then(connection => {
+                connection.playFile('monsrat_mp3/neis.mp3')
+                setTimeout(function () {
+                    voiceChannel.leave();
+                }, 7500);
+            })
+            .catch(err => console.log(err));
+        message.channel.send(a[0] + '네이스 네이스!!!!!!!!!!');
+        message.channel.send({ files: ['monsrat_img/neis.png'] })
     }
 
     if (message.content.indexOf('==후잉') != -1) {
@@ -700,5 +724,4 @@ client.on('message', message => {
         message.channel.send(a[0] + '텟카이!', { files: ['monsrat_img/tet.png'] })
     }
 });
-
 
