@@ -133,7 +133,7 @@ client.on('message', message => {
 
         // case '==search':
         //     if (!args[1]) {
-        //         message.channel.send('제대로된 링크를 적으세요.');
+        //         message.channel.send('제대로된 링크를 적으세요.')
         //         return;
         //     }
         //     if (!message.member.voiceChannel) {
