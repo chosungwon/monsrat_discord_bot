@@ -95,7 +95,6 @@ client.on('message', message => {
                 return;
             }
 
-            if (message.member.voiceChannel !== message.guild.me.voiceChannel) return message.channel.send('저와 같은채널에 계시지 않습니다.');
 
             if (!message.member.voiceChannel) {
                 message.channel.send('채널안에 들어가 있으세요.');
@@ -128,7 +127,7 @@ client.on('message', message => {
                 if (!message.guild.voiceConnection) message.member.voiceChannel.join()
                     .then(function (connection) { play(connection, message); })
                     .catch(error => { console.log(error) })
-                 }
+            }
             break;
 
         // case '==search':
@@ -237,7 +236,7 @@ client.on('message', message => {
                 else {
                     message.reply('명령어를 DM으로 보내드렸습니다. ^^');
                     message.channel.send({ files: ['monsrat_img/111.jpg'] });
-                    message.author.send('```==담배빵, ==기모링, ==개잘해, ==충성, ==버스, ==다1빙, ==뻐큐, ==실압근, ==텟카이, ==어이, ==다운, ==쥐엔장, ==흐에, ==캐리, ==말대꾸, ==좆까, ==쥐커드, ==기분좋구먼유, ==니지건, ==도망가, ==개새꺄, ==아아아, ==기립박수, ==후잉``` ex) @괴물쥐 ==담배빵')
+                    message.author.send('```==담배빵, ==기모링, ==개잘해, ==충성, ==버스, ==다1빙, ==뻐큐, ==실압근, ==텟카이, ==어이, ==다운, ==쥐엔장, ==흐에, ==캐리, ==말대꾸, ==좆까, ==쥐커드, ==기분좋구먼유, ==니지건, ==도망가, ==개새꺄, ==아아아, ==기립박수, ==후잉, ==네이스``` ex) @괴물쥐 ==담배빵')
                     message.author.send('이 있고, 음악을 틀으실 때에는,')
                     message.author.send('```==play 유튜브링크, ==skip, ==stop, ==skip, ==pause, ==list, ==resume```가 있습니다.')
                 }
@@ -294,7 +293,7 @@ client.on('message', message => {
                 connection.playFile('monsrat_mp3/neis.mp3')
                 setTimeout(function () {
                     voiceChannel.leave();
-                }, 7500);
+                }, 7000);
             })
             .catch(err => console.log(err));
         message.channel.send(a[0] + '네이스 네이스!!!!!!!!!!');
@@ -348,6 +347,31 @@ client.on('message', message => {
         message.channel.send(a[0] + '개새꺄 내가 말하고있잖아');
         message.channel.send({ files: ['monsrat_img/iamtalk.png'] })
     }
+
+    if (message.content.indexOf('==장개새꺄') != -1) {
+        if (!message.member.voiceChannel) {
+            message.channel.send(a[0] + '개새꺄 내가 말하고있잖아');
+            message.channel.send({ files: ['monsrat_img/iamtalkjang.png'] })
+            return;
+        }
+
+        if (message.member.voiceChannel === message.guild.me.voiceChannel) {
+            message.reply('괴물쥐가 나갔을때 불러주세요.')
+            return false;
+        }
+        var voiceChannel = message.member.voiceChannel;
+        voiceChannel.join()
+            .then(connection => {
+                connection.playFile('monsrat_mp3/iamtalkjang.mp3')
+                setTimeout(function () {
+                    voiceChannel.leave();
+                }, 4400);
+            })
+            .catch(err => console.log(err));
+        message.channel.send(a[0] + '개새꺄 내가 말하고있잖아');
+        message.channel.send({ files: ['monsrat_img/iamtalkjang.png'] })
+    }
+
 
 
     if (message.content.indexOf('==니지건') != -1) {
@@ -448,6 +472,7 @@ client.on('message', message => {
         message.channel.send(a[0] + '아~ 도망가!~~~~ 핳헤헤');
         message.channel.send({ files: ['monsrat_img/domang.png'] })
     }
+
 
     if (message.content.indexOf('==기분좋구먼유') != -1) {
         if (!message.member.voiceChannel) {
@@ -725,3 +750,5 @@ client.on('message', message => {
     }
 });
 
+
+client.login('NjQ4NzQ4MTM0ODcyMzgzNTMy.XeC6YQ.IAnyTKKyaXFTlJZLMPtYhKm3jTk');
