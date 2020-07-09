@@ -1,5 +1,5 @@
 {
-  "name": "monsrat_bot",
+  "name": "monsterrat",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,12 +9,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^11.5.1",
+    "@discordjs/opus": "^0.3.2",
+    "discord.js": "^12.2.0",
+    "distube": "^1.1.0",
     "ffmpeg": "0.0.4",
-    "ffmpeg-binaries": "^4.0.0",
+    "ffmpeg-static": "^4.2.5",
     "node-opus": "^0.3.3",
     "opusscript": "0.0.7",
-    "request": "^2.88.0",
-    "ytdl-core": "^1.0.0"
+    "ytdl-core": "^3.1.2"
   }
 }
