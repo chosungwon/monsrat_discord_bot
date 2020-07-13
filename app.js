@@ -251,9 +251,6 @@ client.on("message", async (message) => {
                 return;
             }
 
-            if (!message.guild.me.voiceChannel && queue) {
-                distube.stop(message);
-            }
 
             distube.skip(message);
             break;
@@ -269,9 +266,6 @@ client.on("message", async (message) => {
                 return;
             }
 
-            if (!message.guild.me.voiceChannel && queue) {
-                distube.stop(message);
-            }
         
             message.channel.send(
                 "재생목록:\n" +
