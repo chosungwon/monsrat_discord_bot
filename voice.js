@@ -25,7 +25,7 @@ const Command = async (message, poll_args) => {
           },
           {
             name: "뮤직봇 명령어",
-            value: "==play 유튜브링크 아직은 이정도만...^^",
+            value: "==play 유튜브제목, ==stop, ==skip, ==list",
           },
           {
             name: "투표 명령어",
@@ -653,6 +653,7 @@ module.exports = {
     FeelGood,
     Carry,
     Bequiet,
+    JalSleep,
     JotGGa,
     GirupClap,
     AhAhAh,

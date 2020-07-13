@@ -6,11 +6,9 @@ const client = new Discord.Client();
 
 const distube = new DisTube(client, { searchSongs: true, emitNewSongOnly: true })
 
-const ytdl = require("ytdl-core");
 
 const PREFIX = "==";
 
-const queue = new Map();
 const { 
     Command, 
     DamBaeBBang, 
@@ -20,6 +18,7 @@ const {
     DogBaby,  
     JangJiHwan,
     YourGigun,
+    JalSleep,
     BeliveYou,
     Gimoring,
     RunAway,
@@ -35,6 +34,7 @@ const {
     RatQuad,
     Poll
 } = require("./voice");
+const voice = require("./voice");
 
 
 
@@ -65,10 +65,9 @@ client.on("guildMemberAdd", member => {
 client.on("message", async (message) => {
     let args = message.content.split(" ");
     let poll_args = message.content.substring(PREFIX.length).split(" ");
-
+    let queue = distube.getQueue(message);
 
     
-
     if(args[1] == undefined){
         args[1] = '';
     }
@@ -79,7 +78,6 @@ client.on("message", async (message) => {
     switch (args[0]) {
 
             
-
         case "==명령어":
             Command(message, poll_args);
             break;
@@ -204,56 +202,101 @@ client.on("message", async (message) => {
         
         case "==링크":
             message.reply("초대링크를 DM으로 보내드렸습니다!");
-            message.author.send("https://discordapp.com/api/oauth2/authorize?client_id=645600533473656832&permissions=36702208&scope=bot");
+            message.author.send("https://discordapp.com/api/oauth2/authorize?client_id=645600533473656832&permissions=37219136&scope=bot");
             break;
 
         case "==투표":
             Poll(message, poll_args);
             break;
+
+        case "==play":
+            if (args[1] == '') {
+                message.channel.send("유튜브 제목을 입력해주세요.")
+                return;
+            }
+            if (!message.member.voice.channel) {
+                message.channel.send("채널에 들어와 계시지 않습니다.");
+                return;
+            }
+
+            if (!message.guild.me.voiceChannel && queue) {
+                distube.stop(message);        
+            }
+            distube.play(message, args.join(" "));
+            break;
+        
+        case "==stop":
+            if (!message.member.voice.channel) {
+                message.channel.send("채널에 들어와 계시지 않습니다.");
+                return;
+            }
+
+            if (queue == undefined) {
+                message.channel.send("노래가 재생 중이지 않습니다.");
+                return;
+            }
+            distube.stop(message);
+
+            message.channel.send("다음에 보자고 친구ㅋ", { files: ["monsrat_img/end.jpeg"] });
+            break;
+
+        case "==skip":
+            if (!message.member.voice.channel) {
+                message.channel.send("채널에 들어와 계시지 않습니다.");
+                return;
+            }
+
+            if (queue == undefined) {
+                message.channel.send("노래가 재생 중이지 않습니다.");
+                return;
+            }
+
+            if (!message.guild.me.voiceChannel && queue) {
+                distube.stop(message);
+            }
+
+            distube.skip(message);
+            break;
+
+        case "==list":
+            if (!message.member.voice.channel) {
+                message.channel.send("채널에 들어와 계시지 않습니다.");
+                return;
+            }
+
+            if (queue == undefined) {
+                message.channel.send("노래가 재생 중이지 않습니다.");
+                return;
+            }
+
+            if (!message.guild.me.voiceChannel && queue) {
+                distube.stop(message);
+            }
+        
+            message.channel.send(
+                "재생목록:\n" +
+                queue.songs.map((song, id) =>`**${id + 1}**. ${song.name} - \`${song.formattedDuration}\``).join("\n")
+            );
+            break;
         
     }
 
-    const args2 = message.content.slice(PREFIX.length).trim().split(/ +/g);
-    const command = args2.shift();
+    
 
-    if (command == "play"){
-        distube.play(message, args.join(" "));
-    } 
-
-    if (command == "stop"){
-         message.channel.send("다음에 보자고 친구ㅋ", { files: ["monsrat_img/end.jpeg"] });
-         distube.stop(message);
-    } 
-
-    if (command == "skip") distube.skip(message);
-
-    if (command == "list") {
-      let queue = distube.getQueue(message);
-      message.channel.send(
-        "재생목록:\n" +
-          queue.songs
-            .map(
-              (song, id) =>
-                `**${id + 1}**. ${song.name} - \`${song.formattedDuration}\``
-            )
-            .join("\n")
-      );
-    }
+    
   
 
 });
 
 
-// Queue status template
-
-// DisTube event listeners, more in the documentation page
-distube
-    .on("playSong", (message, queue, song) => message.channel.send(
-        `재생 중인 노래 \`${song.name}\` - \`${song.formattedDuration}\`\n신청한 사람: ${song.user}\n`
-    ))
-    .on("addSong", (message, queue, song) => message.channel.send(
-        `추가한 노래 ${song.name} - \`${song.formattedDuration}\` 추가한 사람: ${song.user}`
-    ))
+distube.on("playSong", (message, queue, song) => {
+        message.channel.send(`재생 중인 노래: \`${song.name}\` - \`${song.formattedDuration}\`\n신청한 사람: ${song.user}\n`)
+    })
+    .on("addSong", (message, queue, song) => {
+     
+        
+        message.channel.send(`추가한 노래: \`${song.name}\` - \`${song.formattedDuration}\`\n추가한 사람: ${song.user}\n`)
+    })
     
     .on("searchResult", (message, result) => {
         let i = 0;
@@ -262,9 +305,9 @@ distube
 
     // DisTubeOptions.searchSongs = true
     .on("searchCancel", (message) => message.channel.send(`검색 취소!`))
-    .on("error", (message, err) => console.log(
-        "에러: " + err
-    ));
+    .on("error", (message, err) => {
+        console.log('에러 :' + err)
+    });
 
 
 client.login("");
