@@ -42,7 +42,7 @@ const voice = require("./voice");
 
 client.on("ready", () => {
     console.log("Monster Rat Online");
-    client.user.setActivity("괴물쥐 | ==명령어 입력")
+    client.user.setActivity("괴물쥐 | '==명령어'를 입력")
 });
 
 client.once("reconnecting", () => {
@@ -58,7 +58,7 @@ client.on("guildMemberAdd", member => {
     const channel = member.guild.channels.cache.find(channel => channel.name === "welcome");
     if (!channel) return;
 
-    channel.send(`서버에 오신 ${member}, 환영합니다. ==명령어를 통해 확인해보세요.`)
+    channel.send(`서버에 오신 ${member}, 환영합니다. '==명령어'를 통해 명령어를 확인해보세요.`)
 })
 
 
@@ -219,9 +219,11 @@ client.on("message", async (message) => {
                 return;
             }
 
-            if (!message.guild.me.voiceChannel && queue) {
-                distube.stop(message);        
+
+            if (message.member.voice.channel !== message.guild.me.voice.channel && queue) {
+                distube.deleteQueue(message);       
             }
+
             distube.play(message, args.join(" "));
             break;
         
@@ -255,6 +257,42 @@ client.on("message", async (message) => {
             distube.skip(message);
             break;
 
+        case "==pause":
+            if (!message.member.voice.channel) {
+                message.channel.send("채널에 들어와 계시지 않습니다.");
+                return;
+            }
+
+            if (queue == undefined) {
+                message.channel.send("노래가 재생 중이지 않습니다.");
+                return;
+            }
+
+            message.channel.send("노래를 일시정지 합니다.")
+
+
+            distube.pause(message);
+            break;
+
+        case "==resume":
+            if (!message.member.voice.channel) {
+                message.channel.send("채널에 들어와 계시지 않습니다.");
+                return;
+            }
+
+            if (queue == undefined) {
+                message.channel.send("노래가 재생 중이지 않습니다.");
+                return;
+            }
+
+            message.channel.send("노래를 재개합니다.")
+
+
+            distube.resume(message);
+            break;
+        
+    
+
         case "==list":
             if (!message.member.voice.channel) {
                 message.channel.send("채널에 들어와 계시지 않습니다.");
@@ -264,6 +302,10 @@ client.on("message", async (message) => {
             if (queue == undefined) {
                 message.channel.send("노래가 재생 중이지 않습니다.");
                 return;
+            }
+
+            if (message.member.voice.channel !== message.guild.me.voice.channel && queue) {
+                distube.deleteQueue(message);       
             }
 
         

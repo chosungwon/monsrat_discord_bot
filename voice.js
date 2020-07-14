@@ -25,7 +25,7 @@ const Command = async (message, poll_args) => {
           },
           {
             name: "뮤직봇 명령어",
-            value: "==play 유튜브제목, ==stop, ==skip, ==list",
+            value: "==play 유튜브제목, ==stop, ==skip, ==list, ==pause, ==resume",
           },
           {
             name: "투표 명령어",
@@ -88,7 +88,7 @@ const Howling = async (message, args) => {
     return;
   }
 
-  if (message.member.voice.channel === message.guild.me.voiceChannel) {
+    if (message.member.voice.channel === message.guild.me.voice.channel) {
     message.reply("괴물쥐가 나갔을때 불러주세요.");
     return false;
   }
@@ -113,7 +113,7 @@ const Neice = async (message, args) => {
     return;
   }
 
-  if (message.member.voice.channel === message.guild.me.voiceChannel) {
+    if (message.member.voice.channel === message.guild.me.voice.channel) {
     message.reply("괴물쥐가 나갔을때 불러주세요.");
     return false;
   }
@@ -138,7 +138,7 @@ const Huing = async (message, args) => {
     return;
   }
 
-  if (message.member.voice.channel === message.guild.me.voiceChannel) {
+    if (message.member.voice.channel === message.guild.me.voice.channel) {
     message.reply("괴물쥐가 나갔을때 불러주세요.");
     return false;
   }
@@ -163,7 +163,7 @@ const DogBaby = async (message, args) => {
     return;
   }
 
-  if (message.member.voice.channel === message.guild.me.voiceChannel) {
+    if (message.member.voice.channel === message.guild.me.voice.channel) {
     message.reply("괴물쥐가 나갔을때 불러주세요.");
     return false;
   }
@@ -188,7 +188,7 @@ const JangJiHwan = async (message, args) => {
     return;
   }
 
-  if (message.member.voice.channel === message.guild.me.voiceChannel) {
+    if (message.member.voice.channel === message.guild.me.voice.channel) {
     message.reply("괴물쥐가 나갔을때 불러주세요.");
     return false;
   }
@@ -213,7 +213,7 @@ const YourGigun = async (message, args) => {
     return;
   }
 
-  if (message.member.voice.channel === message.guild.me.voiceChannel) {
+    if (message.member.voice.channel === message.guild.me.voice.channel) {
     message.reply("괴물쥐가 나갔을때 불러주세요.");
     return false;
   }
@@ -239,7 +239,7 @@ const BeliveYou = async (message, args) => {
     return;
   }
 
-  if (message.member.voice.channel === message.guild.me.voiceChannel) {
+    if (message.member.voice.channel === message.guild.me.voice.channel) {
     message.reply("괴물쥐가 나갔을때 불러주세요.");
     return false;
   }
@@ -264,7 +264,7 @@ const Gimoring = async (message, args) => {
     return;
   }
 
-  if (message.member.voice.channel === message.guild.me.voiceChannel) {
+    if (message.member.voice.channel === message.guild.me.voice.channel) {
     message.reply("괴물쥐가 나갔을때 불러주세요.");
     return false;
   }
@@ -289,7 +289,7 @@ const RunAway = async (message, args) => {
     return;
   }
 
-  if (message.member.voice.channel === message.guild.me.voiceChannel) {
+    if (message.member.voice.channel === message.guild.me.voice.channel) {
     message.reply("괴물쥐가 나갔을때 불러주세요.");
     return false;
   }
@@ -314,7 +314,7 @@ const FeelGood = async (message, args) => {
     return;
   }
 
-  if (message.member.voice.channel === message.guild.me.voiceChannel) {
+    if (message.member.voice.channel === message.guild.me.voice.channel) {
     message.reply("괴물쥐가 나갔을때 불러주세요.");
     return false;
   }
@@ -339,7 +339,7 @@ const Carry = async (message, args) => {
     return;
   }
 
-  if (message.member.voice.channel === message.guild.me.voiceChannel) {
+    if (message.member.voice.channel === message.guild.me.voice.channel) {
     message.reply("괴물쥐가 나갔을때 불러주세요.");
     return false;
   }
@@ -365,7 +365,7 @@ const Bequiet = async (message, args) => {
     return;
   }
 
-  if (message.member.voice.channel === message.guild.me.voiceChannel) {
+    if (message.member.voice.channel === message.guild.me.voice.channel) {
     message.reply("괴물쥐가 나갔을때 불러주세요.");
     return false;
   }
@@ -391,7 +391,7 @@ const JotGGa = async (message, args) => {
     return;
   }
 
-  if (message.member.voice.channel === message.guild.me.voiceChannel) {
+    if (message.member.voice.channel === message.guild.me.voice.channel) {
     message.reply("괴물쥐가 나갔을때 불러주세요.");
     return false;
   }
@@ -417,7 +417,7 @@ const GirupClap = async (message, args) => {
     return;
   }
 
-  if (message.member.voice.channel === message.guild.me.voiceChannel) {
+    if (message.member.voice.channel === message.guild.me.voice.channel) {
     message.reply("괴물쥐가 나갔을때 불러주세요.");
     return false;
   }
@@ -443,7 +443,7 @@ const AhAhAh = async (message, args) => {
     return;
   }
 
-  if (message.member.voice.channel === message.guild.me.voiceChannel) {
+    if (message.member.voice.channel === message.guild.me.voice.channel) {
     message.reply("괴물쥐가 나갔을때 불러주세요.");
     return false;
   }
@@ -469,7 +469,7 @@ const DontDo = async (message, args) => {
     return;
   }
 
-  if (message.member.voice.channel === message.guild.me.voiceChannel) {
+    if (message.member.voice.channel === message.guild.me.voice.channel) {
     message.reply("괴물쥐가 나갔을때 불러주세요.");
     return false;
   }
@@ -495,7 +495,7 @@ const JalSleep = async (message, args) => {
     return;
   }
 
-  if (message.member.voice.channel === message.guild.me.voiceChannel) {
+    if (message.member.voice.channel === message.guild.me.voice.channel) {
     message.reply("괴물쥐가 나갔을때 불러주세요.");
     return false;
   }
@@ -524,7 +524,7 @@ const MalDeggu = async (message, args) => {
       return;
     }
 
-    if (message.member.voice.channel === message.guild.me.voiceChannel) {
+      if (message.member.voice.channel === message.guild.me.voice.channel) {
       message.reply("괴물쥐가 나갔을때 불러주세요.");
       return false;
     }
@@ -557,7 +557,7 @@ const Diving = async (message, args) => {
       return;
     }
 
-    if (message.member.voice.channel === message.guild.me.voiceChannel) {
+      if (message.member.voice.channel === message.guild.me.voice.channel) {
       message.reply("괴물쥐가 나갔을때 불러주세요.");
       return false;
     }
@@ -590,7 +590,7 @@ const RatQuad = async (message, args) => {
       return;
     }
 
-    if (message.member.voice.channel === message.guild.me.voiceChannel) {
+      if (message.member.voice.channel === message.guild.me.voice.channel) {
       message.reply("괴물쥐가 나갔을때 불러주세요.");
       return false;
     }
