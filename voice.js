@@ -25,7 +25,7 @@ const Command = async (message, poll_args) => {
           },
           {
             name: "뮤직봇 명령어",
-            value: "==play 유튜브제목, ==stop, ==skip, ==list, ==pause, ==resume",
+            value: "==play 유튜브제목, ==stop, ==skip, ==list, ==pause, ==resume, ==jump 순서",
           },
           {
             name: "투표 명령어",
@@ -35,6 +35,14 @@ const Command = async (message, poll_args) => {
             name: "초대 링크",
             value: "==링크",
           },
+          // {
+          //   name: "개발자에게 커피를 사주세요!",
+          //   value: "==후원"
+          // },
+          // {
+          //   name: "후원",
+          //   value: "서버가 자주 터지고 있습니다. 서버 유지비를 후원해주시면 감사하겠습니다!"
+          // }
         ],
         footer: {
           text: "봇 개발자 • @조성원#8615",

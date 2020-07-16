@@ -205,6 +205,11 @@ client.on("message", async (message) => {
             message.author.send("https://discordapp.com/api/oauth2/authorize?client_id=645600533473656832&permissions=37219136&scope=bot");
             break;
 
+        // case "==후원":
+        //     message.reply("감사합니다!");
+        //     message.author.send("신한은행 110-507-802907 입니다! \n 감사합니다~");
+        //     break;
+
         case "==투표":
             Poll(message, poll_args);
             break;
@@ -238,6 +243,7 @@ client.on("message", async (message) => {
                 return;
             }
             distube.stop(message);
+            message.member.voice.channel.leave();
 
             message.channel.send("다음에 보자고 친구ㅋ", { files: ["monsrat_img/end.jpeg"] });
             break;
@@ -268,6 +274,11 @@ client.on("message", async (message) => {
                 return;
             }
 
+            if (distube.isPaused(message) == true) {
+              message.channel.send("이미 일시정지 되어있습니다.");
+              return;
+            }
+
             message.channel.send("노래를 일시정지 합니다.")
 
 
@@ -285,10 +296,44 @@ client.on("message", async (message) => {
                 return;
             }
 
+             if (distube.isPaused(message) == false) {
+               message.channel.send("노래가 일시정시 되어있지않습니다.");
+               return;
+             }
+
+
             message.channel.send("노래를 재개합니다.")
 
 
             distube.resume(message);
+            break;
+
+        case "==jump":
+            if (args[1] == '') {
+                message.channel.send("점프 할 노래의 순서를 적어주세요.")
+                return;
+            }
+            
+
+            if (isNaN(args[1])) {
+              message.channel.send("점프 뒤에 숫자만 적어주세요.");
+              return;
+            }
+
+
+            if (!message.member.voice.channel) {
+              message.channel.send("채널에 들어와 계시지 않습니다.");
+              return;
+            }
+
+            if (queue == undefined) {
+              message.channel.send("노래가 재생 중이지 않습니다.");
+              return;
+            }
+
+            message.channel.send(`${args[1]}번째 노래로 점프합니다.`)
+            distube.jump(message, args[1]-1)
+
             break;
         
     
@@ -314,6 +359,7 @@ client.on("message", async (message) => {
                 queue.songs.map((song, id) =>`**${id + 1}**. ${song.name} - \`${song.formattedDuration}\``).join("\n")
             );
             break;
+
         
     }
 
